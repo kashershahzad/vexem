@@ -1,0 +1,136 @@
+export const Images = {
+  intro1: require('./intro1.png'),
+  intro2: require('./intro2.png'),
+  intro3: require('./intro3.png'),
+  logo: require('./logo.png'),
+  logoDark: require('./logoDark.png'),
+  manIcon: require('./man.png'),
+  flagIcon: require('./flag.png'),
+  moneyIcon: require('./money.png'),
+  mailIcon: require('./mail.png'),
+  locationMan: require('./locationMan.png'),
+  lang1: require('./lang1.png'),
+  lang2: require('./lang2.png'),
+  introBg: require('./introBg.png'),
+  nextBtn: require('./nextBtn.png'),
+  defaultImg: require('./default.jpg'),
+  noData: require('./noData.png'),
+  mapPin: require('./mapPin.png'),
+  successGif: require('./success.gif'),
+  liveGif: require('./live.gif'),
+  splash: require('./splash.png'),
+
+  // temp images
+  user: require('./user.jpg'),
+  news: require('./news.jpg'),
+  phones: require('./phones.png'),
+  property: require('./property.png'),
+  car: require('./car.png'),
+  auction: require('./auction.png'),
+  events: require('./events.png'),
+  bid: require('./bid.png'),
+  fwdArrow: require('./fwdArrow.png'),
+  house: require('./house.png'),
+  offer: require('./offer.png'),
+  location: require('./location.png'),
+  map: require('./map.png'),
+  likeFill: require('./likeFill.png'),
+  likeEmpty: require('./likeEmpty.png'),
+  feature: require('./feature.png'),
+  camera: require('./camera.png'),
+  gallery: require('./gallery.png'),
+  drop: require('./dropdown.png'),
+  condtion: require('./condition.png'),
+  des: require('./description.png'),
+  share: require('./Share.png'),
+  save: require('./Save.png'),
+  comment: require('./comment.png'),
+  like: require('./like.png'),
+  promotionCard: require('./promotionCard.png'),
+  sport: require('./sport.png'),
+  plusIcon: require('./plusIcn.png'),
+  reload: require('./reload.png'),
+  Job: require('./Job.png'),
+  seeker: require('./recruit.png'),
+  sucess: require('./sucessModal.png'),
+  noShow: require('./noShow.png'),
+  activePlan: require('./activePlan.png'),
+  arabic: require('./arabic.png'),
+  english: require('./english.png'),
+  crown: require('./crown.png'),
+  store: require('./store.png'),
+  store1: require('./store1.png'),
+  poster1: require('./poster1.png'),
+  poster2: require('./poster2.png'),
+  poster3: require('./poster3.png'),
+  cat1: require('./cat1.png'),
+  cat2: require('./cat2.png'),
+  cat3: require('./cat3.png'),
+  cat4: require('./cat4.png'),
+  habeebiImage: require('./logo.png'),
+  jobicn: require('./jobicon.png'),
+  jobCover: require('./jobCover.png'),
+  profileView: require('./profileView.png'),
+  profileCover: require('./profileCover.png'),
+  Gender: require('./Gender.png'),
+  profileUser: require('./profileUser.png'),
+  Age: require('./Age.png'),
+  JobType: require('./JobType.png'),
+  experiance: require('./experiance.png'),
+  remote: require('./remote.png'),
+  DrivingLicense: require('./DrivingLicense.png'),
+  VisaStatus: require('./VisaStatus.png'),
+  CountryStatus: require('./CountryStatus.png'),
+  Nationality: require('./Nationality.png'),
+  Certificates: require('./Certificates.png'),
+  downloadPorifle: require('./downloadPorifle.png'),
+  Portfolio1: require('./image62.png'),
+  Portfolio2: require('./image63.png'),
+  Portfolio3: require('./image65.png'),
+  Portfolio4: require('./image66.png'),
+  Portfolio5: require('./image67.png'),
+  NoJobProfile: require('./NoJobProfile.png'),
+  gradient: require('./gradient.png'),
+  storeImage: require('./storeImage.png'),
+  education :require('./education.png'),
+  workExp :require('./workExp.png'),
+  skill :require('./skill.png'),
+  userJobType :require('./userJobType.png'),
+  License :require('./License.png'),
+  visa :require('./visa.png'),
+  country :require('./country.png'),
+  Resume :require('./Resume.png'),
+  nationality :require('./Nationality.png'),
+  cartificate :require('./cartificate.png'),
+  titlename :require('./titlename.png'),
+  birth :require('./birth.png'),
+  profileGender :require('./profileGender.png'),
+  PortfolioPofile: require('./PortfolioPofile.png'),
+
+
+  // New 
+   backbrn: require('./backbtn.png'),
+   catitem: require('./catitem.png'),
+   Indicator: require('./Indicator.png'),
+   newLogo: require('./new-logo.png'),
+   logoIcon: require('./logo-icon.png'),
+   
+
+
+
+
+
+
+};
+
+// svgs ---------------------------
+export { default as GoogleIcon } from './Google.svg';
+export { default as AppleIcon } from './Vector.svg';
+export { default as BlockUser } from './block.svg';
+export { default as HomeIcon } from './svg-logo.svg';
+export { default as HomeIcon1 } from './svg-logo1.svg';
+export { default as Companybadge } from './companybadge.svg';
+export { default as Officalbadge } from './officalbadge.svg';
+
+
+

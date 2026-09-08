@@ -1,0 +1,7 @@
+<resources>
+    <color name="status_bar_color">#E8E0D4</color>
+    <color name="primary_dark">#E8E0D4</color>
+    <color name="bootsplash_background">#E8E0D4</color>
+    <color name="splashscreen_bg">#E8E0D4</color> <!-- Change to your splash background color -->
+
+</resources>

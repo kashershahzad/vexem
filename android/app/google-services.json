@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "398326467119",
+    "project_id": "vexem-dffa7",
+    "storage_bucket": "vexem-dffa7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:398326467119:android:b0d7baf7253a9ebc9394da",
+        "android_client_info": {
+          "package_name": "com.vexem.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7-gWqKEBmBD0_SbnDdp_hEkECYeF31Us"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
