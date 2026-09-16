@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import fonts from '../../../../assets/fonts';
 import CustomButton from '../../../../components/CustomButton';
 import CustomInput from '../../../../components/CustomInput';
@@ -11,13 +11,8 @@ import { useSelector } from 'react-redux';
 import ApiRequest from '../../../../services/ApiRequest';
 import { ToastMessage } from '../../../../utils/ToastMessage';
 import { colors } from '../../../../utils/colors';
-import { useIsFocused } from '@react-navigation/native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import Icons from '../../../../components/Icons';
-import { Linking } from 'react-native';
 
 const ContactUs = ({ navigation }) => {
-  const isfocus = useIsFocused();
   const init = {
     title: '',
     email: '',
@@ -31,8 +26,6 @@ const ContactUs = ({ navigation }) => {
   const [state, setState] = useState(init);
   const [errors, setErrors] = useState(inits);
   const [loading, setLoading] = useState(false);
-  const [WhatsappData, setWhatsappData] = useState({});
-  
 
   const { token } = useSelector(store => store.user);
 
@@ -56,30 +49,6 @@ const ContactUs = ({ navigation }) => {
       ...prevErrors,
       [`${field}Error`]: validateField(field, value),
     }));
-  };
-
-  const Iswhatsapp = async () => {
-    try {
-      const datsend = {
-        type: 'get_data',
-        table_name: 'preference',
-      };
-      const res = await ApiRequest(datsend);
-      setWhatsappData(res?.data?.data?.[0]);
-    } catch (error) {}
-  };
-  useEffect(() => {
-    Iswhatsapp();
-  }, [isfocus]);
-
-  const handleWhatsAppPress = async () => {
-    const url = `whatsapp://send?phone=${WhatsappData?.whatsapp}`;
-    const supported = await Linking.canOpenURL(url);
-    if (supported) {
-      await Linking.openURL(url);
-    } else {
-      Alert.alert('Error', 'WhatsApp is not installed on this device.');
-    }
   };
 
   const handlePress = async () => {
@@ -163,34 +132,6 @@ const ContactUs = ({ navigation }) => {
         disabled={loading}
         loading={loading}
       />
-
-      {WhatsappData?.whatsapp && (
-        <TouchableOpacity
-          style={{
-            backgroundColor: colors.primaryColor,
-            height: 48,
-            borderRadius: 7,
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexDirection: 'row',
-            paddingHorizontal: 8,
-            gap: 5,
-          }}
-          onPress={handleWhatsAppPress}>
-          <Icons
-            name={'whatsapp'}
-            family={'FontAwesome'}
-            size={20}
-            color={colors.white}
-          />
-          <CustomText
-            label={'Whatsapp'}
-            fontFamily={fonts.semiBold}
-            color={colors.white}
-            fontSize={16}
-          />
-        </TouchableOpacity>
-      )}
     </ScreenWrapper>
   );
 };

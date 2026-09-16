@@ -92,13 +92,15 @@ const Home = ({ navigation }) => {
       };
 
       const res = await ApiRequest(body);
+      console.log('get_home response:', JSON.stringify(res?.data, null, 2));
+      console.log('stores:', res?.data?.data?.store);
       setHomeData(res?.data?.data);
-      
+
       if (res?.data?.data?.category) {
         setCategory(res?.data?.data?.category);
         dispatch(setCategories(res?.data?.data?.category));
       }
-      
+
       setLoadingPrimary(false);
       fetchSecondaryData();
     } catch (error) {
@@ -225,7 +227,7 @@ const Home = ({ navigation }) => {
     handleLocation();
   }, [dispatch, token]);
 
-   const handleAddressChange = address => {
+  const handleAddressChange = address => {
     setAddressData({
       address: address.address,
       lat: address.lat,
@@ -267,7 +269,7 @@ const Home = ({ navigation }) => {
             home
           />
         </View>
-        <View style={{ paddingHorizontal: 16 }}>
+        {/* <View style={{ paddingHorizontal: 16 }}>
           {loadingPrimary ? (
             <View style={styles.mapContainer}>
               {[1, 2, 3, 4].map((item, index) => (
@@ -302,26 +304,80 @@ const Home = ({ navigation }) => {
                 ))}
               </View>
             </ScrollView>
-          ) : (
-            !loadingPrimary && (
-              <CustomText
-                label={'No stores found...'}
-                alignSelf={'center'}
-                fontFamily={fonts.semiBold}
-                fontSize={17}
-                marginBottom={10}
-                marginTop={10}
-              />
-            )
-          )}
-        </View>
-        {loadingPrimary ? (
+          ) 
+          // : (
+          //   !loadingPrimary && (
+          //     <CustomText
+          //       label={'No stores found...'}
+          //       alignSelf={'center'}
+          //       fontFamily={fonts.semiBold}
+          //       fontSize={17}
+          //       marginBottom={10}
+          //       marginTop={10}
+          //     />
+          //   )
+          // )
+          : null}
+        </View> */}
+
+
+{loadingPrimary ? (
+  <View style={{ paddingHorizontal: 16 }}>
+    <View style={styles.mapContainer}>
+      {[1, 2, 3, 4].map((item, index) => (
+        <CardSkeleton key={index} isStore />
+      ))}
+    </View>
+  </View>
+) : homeData?.store?.length > 0 ? (
+  <View style={{ paddingHorizontal: 16 }}>
+    <ScrollView
+      horizontal
+      contentContainerStyle={styles.tabContainer}
+      showsHorizontalScrollIndicator={false}>
+      <View style={styles.tabContainer}>
+        {homeData.store.map((item, index) => (
+          <TouchableOpacity
+            key={index}
+            activeOpacity={0.5}
+            style={styles.storeBox}
+            onPress={() =>
+              navigation.navigate('StorePage', {
+                store: item,
+                ishome: true,
+              })
+            }>
+            <ImageFast
+              resizeMode={'contain'}
+              source={{ uri: item?.image }}
+              style={styles.image}
+              svgH={55}
+              svgW={42}
+            />
+          </TouchableOpacity>
+        ))}
+      </View>
+    </ScrollView>
+  </View>
+) : null}
+
+
+        {/* {loadingPrimary ? (
           <View style={{ paddingHorizontal: 16 }}>
             <SwiperSkeleton />
           </View>
         ) : (
           <HomeSlider images={sliderImages} onPress={handleSliderPress} />
-        )}
+        )} */}
+
+{loadingPrimary ? (
+  <View style={{ paddingHorizontal: 16 }}>
+    <SwiperSkeleton />
+  </View>
+) : sliderImages?.length > 0 ? (
+  <HomeSlider images={sliderImages} onPress={handleSliderPress} />
+) : null}
+
         <View style={{ paddingHorizontal: 16 }}>
           {loadingPrimary ? (
             <View style={[styles.mapContainer, { marginTop: -10 }]}>
@@ -366,9 +422,9 @@ const Home = ({ navigation }) => {
                         item?.id === -1
                           ? navigation.navigate('News', { myAd: false })
                           : navigation.navigate('SubCategories', {
-                              catData: item,
-                              type: { type: 'view' },
-                            })
+                            catData: item,
+                            type: { type: 'view' },
+                          })
                       }
                     />
                   )
