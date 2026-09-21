@@ -37,6 +37,7 @@ import Icons from '../../../components/Icons';
 import MessageBox from '../../../components/MessageBox';
 import ScreenWrapper from '../../../components/ScreenWrapper';
 import ApiRequest, { get, put } from '../../../services/ApiRequest';
+import { endPoints } from '../../../services/ENV';
 import { colors } from '../../../utils/colors';
 import { imgUrl } from '../../../utils/constants';
 import { ToastMessage } from '../../../utils/ToastMessage';
@@ -344,10 +345,9 @@ const ChatScreen = () => {
 
   useEffect(() => {
     const initializeSocket = async () => {
-      const url = 'https://cdn.utecho.com:5000/';
       const token = await AsyncStorage.getItem('chatToken');
 
-      socketRef.current = connect(url, {
+      socketRef.current = connect(endPoints.socket_BASE_URL, {
         query: { token: token },
       });
 

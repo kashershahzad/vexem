@@ -161,7 +161,7 @@ const ListViewCard = ({
         </View>
         <View style={[styles.row, { marginBottom: 5 }]}>
           <CustomText
-            label={'$'}
+            label={'PKR'}
             fontFamily={fonts.semiBold}
             color={colors.primaryColor}
             marginRight={5}

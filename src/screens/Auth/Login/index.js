@@ -215,7 +215,11 @@ const Login = () => {
           chatToken = await handleSubLogin(email);
         }
 
-        await AsyncStorage.setItem("chatToken", chatToken);
+        if (chatToken) {
+          await AsyncStorage.setItem("chatToken", chatToken);
+        } else {
+          console.log("chatToken missing after apple login");
+        }
         await handleDeviceRegistration(res.data?.user_id);
         dispatch(setUserToken(res.data?.user_id));
         navigation.reset({ index: 0, routes: [{ name: "MainStack" }] });
@@ -264,7 +268,11 @@ const Login = () => {
           chatToken = await handleSubLogin(userInfo?.user?.email);
         }
 
-        await AsyncStorage.setItem("chatToken", chatToken);
+        if (chatToken) {
+          await AsyncStorage.setItem("chatToken", chatToken);
+        } else {
+          console.log("chatToken missing after google login");
+        }
         await handleDeviceRegistration(res.data?.user_id);
         dispatch(setUserToken(res.data?.user_id));
         navigation.reset({ index: 0, routes: [{ name: "MainStack" }] });
@@ -305,7 +313,14 @@ const Login = () => {
             chatToken = await handleSubLogin(res.data?.email);
           }
 
-          await AsyncStorage.setItem("chatToken", chatToken);
+          if (chatToken) {
+            await AsyncStorage.setItem("chatToken", chatToken);
+          } else {
+            console.log("chatToken missing after email/phone login", {
+              email: res.data?.email,
+              user_id_int: res?.data?.user_id_int,
+            });
+          }
           await handleDeviceRegistration(res.data?.user_id);
           dispatch(setUserToken(res.data?.user_id));
           navigation.reset({ index: 0, routes: [{ name: "MainStack" }] });

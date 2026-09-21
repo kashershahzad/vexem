@@ -95,7 +95,7 @@ const Home = ({ navigation }) => {
       console.log('get_home response:', JSON.stringify(res?.data, null, 2));
       console.log('stores:', res?.data?.data?.store);
       setHomeData(res?.data?.data);
-
+      
       if (res?.data?.data?.category) {
         setCategory(res?.data?.data?.category);
         dispatch(setCategories(res?.data?.data?.category));
@@ -118,6 +118,7 @@ const Home = ({ navigation }) => {
       };
 
       const res = await ApiRequest(body);
+      console.log('get_home_2 response:', res);
       setHomeData2(res?.data?.data);
       setLoadingSecondary(false);
       setRefreshing(false);
@@ -321,7 +322,7 @@ const Home = ({ navigation }) => {
         </View> */}
 
 
-{loadingPrimary ? (
+{/* {loadingPrimary ? (
   <View style={{ paddingHorizontal: 16 }}>
     <View style={styles.mapContainer}>
       {[1, 2, 3, 4].map((item, index) => (
@@ -359,7 +360,7 @@ const Home = ({ navigation }) => {
       </View>
     </ScrollView>
   </View>
-) : null}
+) : null} */}
 
 
         {/* {loadingPrimary ? (
@@ -370,13 +371,13 @@ const Home = ({ navigation }) => {
           <HomeSlider images={sliderImages} onPress={handleSliderPress} />
         )} */}
 
-{loadingPrimary ? (
+ {loadingPrimary ? (
   <View style={{ paddingHorizontal: 16 }}>
     <SwiperSkeleton />
   </View>
 ) : sliderImages?.length > 0 ? (
   <HomeSlider images={sliderImages} onPress={handleSliderPress} />
-) : null}
+) : null} 
 
         <View style={{ paddingHorizontal: 16 }}>
           {loadingPrimary ? (

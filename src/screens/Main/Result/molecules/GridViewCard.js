@@ -130,7 +130,7 @@ const GridViewCard = ({
             />
           </View>
           <CustomText
-            label={ `QR ${auctionPrice}` || `QR ${Number(price).toLocaleString()}`}
+            label={ `PKR ${auctionPrice}` || `PKR ${Number(price).toLocaleString()}`}
             fontSize={17}
             fontFamily={fonts.bold}
             color={colors.primaryColor}

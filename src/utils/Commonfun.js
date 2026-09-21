@@ -6,6 +6,24 @@ export const passwordRegex =
   /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{8,}$/;
 
 export const numberRegex = /^\d*$/;
+
+const hasCityLabel = value => /\bcit(y|ies)\b/.test(String(value || '').toLowerCase());
+
+export const isCityCustomField = field => {
+  if (hasCityLabel(field?.name)) {
+    return true;
+  }
+
+  try {
+    const translations =
+      typeof field?.translations === 'string'
+        ? JSON.parse(field.translations)
+        : field?.translations;
+    return hasCityLabel(translations?.en);
+  } catch {
+    return false;
+  }
+};
 export const dummyArray = [
   { id: 1 },
   { id: 2 },
@@ -18,12 +36,12 @@ export const dummyArray = [
 export const onSharePress = async () => {
   try {
     const url = 'https://app.vexem.co/';
-
     const msg =
-      'Download Vexem today and experience the most convenient way to buy and sell in Qatar!';
+      'Download Vexem today and experience a smarter, more convenient way to buy and sell!!';
+
     const shareOptions = {
-      message: msg,
-      url: url,
+      message: `${msg}\n${url}`,
+      title: 'Vexem',
     };
 
     await Share.open(shareOptions);

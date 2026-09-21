@@ -163,7 +163,7 @@ const HomeCard = ({
         {!news && !events && (
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <CustomText
-              label={'$'}
+              label={'PKR'}
               fontFamily={fonts.semiBold}
               color={colors.primaryColor}
               marginRight={5}

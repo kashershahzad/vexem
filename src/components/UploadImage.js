@@ -21,57 +21,70 @@ const UploadImage = props => {
   const [imageModal, setImageModal] = useState(false);
 
   const takePhotoFromCamera = () => {
-    try {
-      const options = {
-        mediaType: 'photo',
-        cropping: false,
-        ...(Platform.OS === 'ios' && {
-          width: 1000,
-          height: 800,
-          freeStyleCropEnabled: true,
-        }),
-        ...props.options,
-      };
-      setImageModal(false);
-      setTimeout(async () => {
+    const options = {
+      mediaType: 'photo',
+      cropping: false,
+      compressImageQuality: 0.7,
+      compressImageMaxWidth: 1600,
+      compressImageMaxHeight: 1600,
+      forceJpg: true,
+      includeBase64: false,
+      ...(Platform.OS === 'ios' && {
+        width: 1000,
+        height: 800,
+        freeStyleCropEnabled: true,
+      }),
+      ...props.options,
+    };
+    setImageModal(false);
+    setTimeout(async () => {
+      try {
         const result = await openCamera(options);
-
         if (result) {
           setImage(result);
           props.handleChange(result);
         }
-      }, 500);
-    } catch (error) {
-      console.log('takePhotoFromCamera error', error);
-    }
+      } catch (error) {
+        if (error?.code !== 'E_PICKER_CANCELLED') {
+          console.log('takePhotoFromCamera error', error);
+        }
+      }
+    }, 500);
   };
 
-  const takePhotoFromLibrary = async () => {
-    try {
-      const options = {
-        mediaType: 'photo',
-        cropping: false,
-        multiple: props.multiple,
-        maxFiles: 20,
-        ...(Platform.OS === 'ios' && {
-          width: 1000,
-          height: 800,  
-          freeStyleCropEnabled: true,
-        }),
+  const takePhotoFromLibrary = () => {
+    const options = {
+      mediaType: 'photo',
+      cropping: false,
+      multiple: props.multiple,
+      maxFiles: 20,
+      compressImageQuality: 0.8,
+      compressImageMaxWidth: 1600,
+      compressImageMaxHeight: 1600,
+      forceJpg: true,
+      includeBase64: false,
+      ...(Platform.OS === 'ios' && {
+        width: 1000,
+        height: 800,
         freeStyleCropEnabled: true,
-        ...props.options,
-      };
-      setImageModal(false);
-      setTimeout(async () => {
+      }),
+      freeStyleCropEnabled: true,
+      ...props.options,
+    };
+    setImageModal(false);
+    setTimeout(async () => {
+      try {
         const result = await openPicker(options);
         if (result) {
           setImage(result);
           props.handleChange(result);
         }
-      }, 1000);
-    } catch (error) {
-      console.log('takePhotoFromLibrary error', error);
-    }
+      } catch (error) {
+        if (error?.code !== 'E_PICKER_CANCELLED') {
+          console.log('takePhotoFromLibrary error', error);
+        }
+      }
+    }, 1000);
   };
 
   const ModalIcons = ({ source, title, onPress }) => {

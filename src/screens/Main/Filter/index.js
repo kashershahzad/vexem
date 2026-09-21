@@ -11,7 +11,7 @@ import { DatePicker } from '../../../components/DatePicker';
 import Header from '../../../components/Header';
 import ScreenWrapper from '../../../components/ScreenWrapper';
 import { colors } from '../../../utils/colors';
-import { numberRegex } from '../../../utils/Commonfun';
+import { isCityCustomField, numberRegex } from '../../../utils/Commonfun';
 import ImageFastWrapper from '../../../components/ImageFast';
 import { imgUrl } from '../../../utils/constants';
 import CustomDropdown from '../../../components/CustomDropDown';
@@ -180,7 +180,8 @@ const Filter = ({ navigation, route }) => {
   }, [route]);
 
   const renderField = field => {
-    switch (field.type) {
+    const fieldType = isCityCustomField(field) ? 'text' : field.type;
+    switch (fieldType) {
       case 'dropdown':
         return (
           <>

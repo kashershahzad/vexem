@@ -20,13 +20,13 @@ import ScreenWrapper from '../../../components/ScreenWrapper';
 import UploadImage from '../../../components/UploadImage';
 import ApiRequest from '../../../services/ApiRequest';
 import { colors } from '../../../utils/colors';
-import { numberRegex } from '../../../utils/Commonfun';
 import {
   imgUrl,
   regEmail,
   uploadAndGetUrl,
   validatePhone,
 } from '../../../utils/constants';
+import { isCityCustomField } from '../../../utils/Commonfun';
 import { ToastMessage } from '../../../utils/ToastMessage';
 import DraggableFlatList, {
   ScaleDecorator,
@@ -133,12 +133,6 @@ const CreateAd = ({ navigation, route }) => {
   };
 
   const handleInputChange = (field, value) => {
-    if (field === 'price' || field === 'maxPrice') {
-      const isNum = numberRegex.test(value);
-      if (!isNum) {
-        return false;
-      }
-    }
     setState(prevState => ({ ...prevState, [field]: value }));
     setErrors(prevErrors => ({
       ...prevErrors,
@@ -148,38 +142,51 @@ const CreateAd = ({ navigation, route }) => {
 
   const getImages = async (res, name) => {
     if (res?.path && name === 'img') {
+      console.log('[CreateAd] main picture selected', {
+        path: res?.path,
+        filename: res?.filename,
+        mime: res?.mime,
+        size: res?.size,
+        width: res?.width,
+        height: res?.height,
+      });
       setImgLoading(true);
       setImgSingle([res?.path]);
-      const url = await uploadAndGetUrl(res);
-      if (url) {
-        setImagesSingle([url]);
-      } else {
+      try {
+        const url = await uploadAndGetUrl(res);
+        console.log('[CreateAd] main picture upload result url:', url);
+        if (url) {
+          setImagesSingle([url]);
+        } else {
+          console.log('[CreateAd] main picture upload failed — clearing preview');
+          setImagesSingle([]);
+          setImgSingle([]);
+        }
+      } catch (error) {
+        console.log('[CreateAd] main picture upload error', error);
         setImagesSingle([]);
         setImgSingle([]);
+        ToastMessage('Upload Again');
+      } finally {
+        setImgLoading(false);
       }
-      setImgLoading(false);
     } else {
+      if (!Array.isArray(res) || res.length === 0) {
+        return;
+      }
+
       setImgLoading1(true);
-      const newImgDouble = [...imgDouble, ...res?.map(item => item?.path)];
+      const newImgDouble = [...imgDouble, ...res.map(item => item?.path)];
       setImgDouble(newImgDouble);
 
-      const uploadPromises = res.map((image, index) => {
-        return new Promise(async (resolve, reject) => {
-          try {
-            const url = await uploadAndGetUrl(image);
-            resolve(url);
-          } catch (error) {
-            reject(error);
-          }
-        });
-      });
-
       try {
-        const uploadedImages = await Promise.all(uploadPromises);
+        const uploadedImages = await Promise.all(
+          res.map(image => uploadAndGetUrl(image)),
+        );
 
-        const validImages = uploadedImages.filter(url => url !== undefined);
+        const validImages = uploadedImages.filter(Boolean);
         const undefinedIndices = uploadedImages
-          .map((item, index) => (item === undefined ? index : -1))
+          .map((item, index) => (!item ? index : -1))
           .filter(index => index !== -1);
 
         const updateData = newImgDouble.filter(
@@ -191,10 +198,9 @@ const CreateAd = ({ navigation, route }) => {
           ...prevImages,
           ...validImages.map(img => imgUrl + img),
         ]);
-        setImgLoading(false);
       } catch (error) {
         console.error('Error uploading images:', error);
-        setImgLoading(false);
+        ToastMessage('Upload Again');
       } finally {
         setImgLoading(false);
         setImgLoading1(false);
@@ -278,9 +284,12 @@ const CreateAd = ({ navigation, route }) => {
             ad,
           });
         } else {
+          const customFields = (fields || []).map(field =>
+            isCityCustomField(field) ? { ...field, type: 'text' } : field,
+          );
           navigation.navigate('CustomFields', {
             data: dataToSend,
-            fields,
+            fields: customFields,
             ad,
           });
         }
@@ -766,7 +775,6 @@ const CreateAd = ({ navigation, route }) => {
           value={state.price}
           onChangeText={text => handleInputChange('price', text)}
           error={errors.priceError}
-          keyboardType="numeric"
         />
         {type?.type === 'auction' && (
           <>
@@ -804,7 +812,6 @@ const CreateAd = ({ navigation, route }) => {
                 placeholder={'Enter increment price'}
                 value={state.maxPrice}
                 onChangeText={text => handleInputChange('maxPrice', text)}
-                keyboardType="numeric"
               />
             )}
             {errors.maxPriceError && (

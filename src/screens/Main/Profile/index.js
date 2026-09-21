@@ -1,6 +1,6 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useEffect, useRef, useState } from 'react';
-import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { FlatList, Linking, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import fonts from '../../../assets/fonts';
 import { Images } from '../../../assets/images';
@@ -20,6 +20,7 @@ import DeleteAccountModal from './ProfileScreens/molecules/DeleteAccountModal';
 import { tabIcons } from '../../../assets/images/tabIcons';
 import { Image } from 'react-native';
 
+const WEBSITE_URL = 'https://vexem.co/login';
 const HeaderIcon = ({ onPress }) => {
   return (
     <TouchableOpacity style={styles.logoutIcon} onPress={onPress}>
@@ -86,6 +87,12 @@ const Profile = () => {
       icon: 'language',
       family: 'FontAwesome',
       screenName: 'ChangeLanguage',
+    },
+    {
+      name: 'Website',
+      icon: 'globe',
+      family: 'Feather',
+      screenName: '',
     },
     {
       name: 'Notifications',
@@ -326,6 +333,8 @@ const Profile = () => {
                   ? setIsVisible(true)
                   : item.icon === 'share-2'
                   ? onSharePress()
+                  : item.icon === 'globe'
+                  ? Linking.openURL(WEBSITE_URL)
                   : handleNavigation(item.screenName)
               }>
               <View style={styles.innerBox}>
@@ -344,7 +353,14 @@ const Profile = () => {
                     />
                   )}
                 </View>
-                <CustomText label={item.name} fontFamily={fonts.semiBold} />
+                <CustomText
+                  label={item.name}
+                  fontFamily={fonts.semiBold}
+                  numberOfLines={item.name === 'Share this App' ? 4 : 1}
+                  lineHeight={item.name === 'Share this App' ? 20 : undefined}
+                  containerStyle={styles.sectionLabel}
+                  textStyle={styles.sectionLabelText}
+                />
               </View>
               <TouchableOpacity
                 onPress={() => handleNavigation(item.screenName)}>
@@ -430,11 +446,23 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     marginBottom: 2,
     borderRadius: 8,
-    padding: 10,
+    paddingVertical: 14,
+    paddingHorizontal: 10,
+    minHeight: 56,
   },
   innerBox: {
     flexDirection: 'row',
     alignItems: 'center',
+    flex: 1,
+    marginRight: 8,
+  },
+  sectionLabel: {
+    flex: 1,
+    flexShrink: 1,
+    paddingRight: 8,
+  },
+  sectionLabelText: {
+    flexShrink: 1,
   },
   iconBox: {
     backgroundColor: colors.lightBlue,

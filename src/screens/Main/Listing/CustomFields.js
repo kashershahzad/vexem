@@ -15,6 +15,7 @@ import Icons from '../../../components/Icons';
 import ImageFastWrapper from '../../../components/ImageFast';
 import ScreenWrapper from '../../../components/ScreenWrapper';
 import { colors } from '../../../utils/colors';
+import { isCityCustomField } from '../../../utils/Commonfun';
 import { imgUrl, uploadAndGetUrl } from '../../../utils/constants';
 
 const CustomFields = ({ navigation, route }) => {
@@ -201,12 +202,13 @@ const CustomFields = ({ navigation, route }) => {
 
   const renderField = field => {
     const errorMessage = errors[field.name];
+    const fieldType = isCityCustomField(field) ? 'text' : field.type;
 
     const getFileExtension = uri => {
       return uri.split('.').pop().toLowerCase();
     };
 
-    switch (field.type) {
+    switch (fieldType) {
       case 'dropdown':
         return (
           <>

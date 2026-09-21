@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import { PermissionsAndroid, Platform } from 'react-native';
 import ApiRequest from '../services/ApiRequest';
+import { endPoints } from '../services/ENV';
 import { ToastMessage } from './ToastMessage';
 export const regEmail =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -10,42 +11,83 @@ export const regEmail =
 export const passwordRegex =
   /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]{8,}$/;
 
-export const imgUrl = 'https://habeebi.com/api/images/';
+export const imgUrl = 'https://api.vexem.co/images/';
 export const GOOGLE_API_KEY = 'AIzaSyB30IDHxRCBwsaiocbWMGCgS0f4Go3FPew';
 
+const normalizeUploadUri = path => {
+  if (!path) return path;
+  if (path.startsWith('file://') || path.startsWith('content://')) {
+    return path;
+  }
+  return `file://${path}`;
+};
+
+const getUploadFileName = file => {
+  if (file?.filename) {
+    return file.filename;
+  }
+
+  const fromPath = file?.path?.split('/')?.pop();
+  if (fromPath && fromPath.includes('.')) {
+    return fromPath;
+  }
+
+  const ext = (file?.mime || 'image/jpeg').split('/')[1] || 'jpg';
+  return `camera_${Date.now()}.${ext === 'jpeg' ? 'jpg' : ext}`;
+};
 
 export const uploadAndGetUrl = async (file, isNotImage) => {
   const body = new FormData();
   body.append('type', 'upload_data');
 
+  console.log('[uploadAndGetUrl] start', {
+    api: 'type=upload_data',
+    endpoint: endPoints.BASE_URL,
+    isNotImage: !!isNotImage,
+    file,
+  });
+
   if (!isNotImage) {
-    const imageName = file.path.split('/');
     const imageData = {
       fileCopyUri: null,
-      name:
-        Platform.OS === 'ios'
-          ? file?.filename
-          : imageName[imageName?.length - 1],
+      name: getUploadFileName(file),
       size: file?.size,
-      type: file?.mime,
-      uri: file?.path,
+      type: file?.mime || 'image/jpeg',
+      uri: normalizeUploadUri(file?.path),
     };
+    console.log('[uploadAndGetUrl] image payload', imageData);
     body.append('file', imageData);
   } else {
+    console.log('[uploadAndGetUrl] non-image file payload', file);
     body.append('file', file);
   }
 
   try {
     const res = await ApiRequest(body);
+    console.log('[uploadAndGetUrl] response', {
+      endpoint: endPoints.BASE_URL,
+      status: res?.status,
+      data: res?.data,
+      result: res?.data?.result,
+      file_name: res?.data?.file_name,
+    });
     if (res.data.result) {
       return res.data?.file_name;
     } else {
+      console.log('[uploadAndGetUrl] failed: result false', res?.data);
       ToastMessage('Upload Again');
       return '';
     }
   } catch (err) {
-    console.log(err);
+    console.log('[uploadAndGetUrl] error', {
+      endpoint: endPoints.BASE_URL,
+      message: err?.message,
+      status: err?.response?.status,
+      responseData: err?.response?.data,
+      err,
+    });
     ToastMessage('Upload Again');
+    return '';
   }
 };
 

@@ -67,8 +67,12 @@ const MyAd = ({ navigation }) => {
         specific_user: token,
         user_id: token,
       };
-
+      
       const response = await ApiRequest(dataToGet);
+      console.log(
+        '[MyAds] first item images:',
+        response?.data?.data?.[0]?.images,
+      );
       if (response.data.data) {
         setData(response.data.data);
       } else {
@@ -120,7 +124,12 @@ const MyAd = ({ navigation }) => {
               item={item}
               price={item?.price}
               description={item?.description}
-              source={{ uri: imgUrl + item?.images }}
+              source={{
+                uri:
+                  item?.images?.startsWith?.('http')
+                    ? item.images
+                    : imgUrl + item?.images,
+              }}
               onPress={() => {
                 navigation.navigate('Detail', {
                   itemId: item?.id,

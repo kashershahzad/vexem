@@ -300,7 +300,9 @@ const Signup = () => {
           chatToken = await handleSubLogin(email);
         }
 
-        await AsyncStorage.setItem('chatToken', chatToken);
+        if (chatToken) {
+          await AsyncStorage.setItem('chatToken', chatToken);
+        }
         await handleDeviceRegistration(res.data?.user_id);
         dispatch(setUserToken(res.data?.user_id));
         navigation.reset({ index: 0, routes: [{ name: 'MainStack' }] });
@@ -346,7 +348,9 @@ const Signup = () => {
           chatToken = await handleSubLogin(userInfo?.user?.email);
         }
 
-        await AsyncStorage.setItem('chatToken', chatToken);
+        if (chatToken) {
+          await AsyncStorage.setItem('chatToken', chatToken);
+        }
         await handleDeviceRegistration(res.data?.user_id);
         dispatch(setUserToken(res.data?.user_id));
         navigation.reset({ index: 0, routes: [{ name: 'MainStack' }] });

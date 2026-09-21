@@ -482,7 +482,7 @@ const Detail = ({ route }) => {
     
     // Generate the ad URL
     const title = onGetUrl(item?.name);
-    const adUrl = `https://halooq.com/item/Detail/${title}/${item?.id}`;
+    const adUrl = `https://vexem.com/item/Detail/${title}/${item?.id}`;
     console.log(adUrl);
 
     const downloadResult = await RNFS.downloadFile({
